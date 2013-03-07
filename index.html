@@ -1,0 +1,153 @@
+<html>
+ <head>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+  <title>Pet Trans</title>
+  <script>
+   //global variables
+   var inter;
+
+   //load
+   function loaded(){
+    if (!localStorage){
+     document.write("This web app is not supported! Please open in HTML5 web browser");
+    }
+    
+    //test for locally stored variables
+    if (localStorage.getItem("petName") != undefined && localStorage.getItem("petType") != undefined){
+     document.getElementById("recorder").style.display = "inline";
+    }
+    else{
+     document.getElementById("main").style.display = "inline";
+    }
+   }
+
+   //main
+   function submitted(){
+    localStorage.setItem("petName", document.getElementById("petname").value);
+    localStorage.setItem("petType", document.getElementById("pettype").options[document.getElementById("pettype").selectedIndex].value);
+    document.getElementById("main").style.display = "none";
+    document.getElementById("recorder").style.display = "inline";
+    document.getElementById("petname").value = "";
+   }
+
+   //recorder
+   function moused(){
+    document.getElementById("record").style.display = "none";
+    document.getElementById("end").style.display = "inline";
+    document.getElementById("message").innerHTML = "Translating.";
+    inter = setInterval(rotate, 500);
+   }
+   function rotate(){
+    document.getElementById("message").innerHTML += ".";
+    if (document.getElementById("loading").alt == "Image 1"){
+     document.getElementById("loading").src = "images/capture2.jpg";
+     document.getElementById("loading").alt = "Image 2";
+    }
+    else if (document.getElementById("loading").alt == "Image 2"){
+     document.getElementById("loading").src = "images/capture3.jpg";
+     document.getElementById("loading").alt = "Image 3";
+    }
+    else if (document.getElementById("loading").alt == "Image 3"){
+     document.getElementById("loading").src = "images/capture4.jpg";
+     document.getElementById("loading").alt = "Image 4";
+    }else{
+     document.getElementById("loading").src = "images/capture1.jpg";
+     document.getElementById("loading").alt = "Image 1";
+     document.getElementById("message").innerHTML = "Translating.";
+    }
+   }
+   function end(){
+    document.getElementById("end").style.display = "none";
+    document.getElementById("record").style.display = "inline";
+    document.getElementById("loading").src = "images/capture1.jpg";
+    document.getElementById("loading").alt = "Image 1";
+    clearInterval(inter);
+    randomPick();
+   }
+   function randomPick(){
+    var rnd = Math.floor(Math.random()*10 + 1);
+    if (rnd == 1){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'Hello, I love you.'";
+    }
+    else if (rnd == 2){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'I am hungry.'";
+    }
+    else if (rnd == 3){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'I would like some water please.'";
+    }
+    else if (rnd == 4){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'Please play with me.'";
+    }
+    else if (rnd == 5){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'Please gimme a treat.'";
+    }
+    else if (rnd == 6){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'How are you doing?'";
+    }
+    else if (rnd == 7){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'Whatchya wanna do?'";
+    }
+    else if (rnd == 8){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'What day is today?'";
+    }
+    else if (rnd == 9){
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'I heart your heart.'";
+    }
+    else{
+     document.getElementById("message").innerHTML = localStorage.getItem("petName") + " says 'Please pet me.'";
+    }
+   }
+   function resetPet(){
+    localStorage.clear();
+    location.reload();
+   }
+  </script>
+  <style>
+   body{
+    background-color:black;
+    color:white;
+    text-align:center;
+   }
+   button{
+    background-color:white;
+    color:black;
+    font-size:24px;
+   }
+   #recorder, #end, #main{
+    display:none;
+   }
+   #reset{
+    background-color:white;
+    color:black;
+    font-size:20px;
+   }
+   #pettype, #petname{
+    font-size:16px;
+   }
+  </style>
+ </head>
+ <body onload="loaded()">
+  <div id="main">
+   <img src="images/logo.jpg" width="250"/>
+   <br/><br/>
+   Please select your pet type and enter his or her name.
+   <br/><br/>
+   Pet Type:<br/><select id="pettype"><option value="dog">Dog</option><option value="cat">Cat</option></select>
+   <br/><br/>
+   Pet Name:<br/><input type="text" id="petname"/>
+   <br/><br/>
+   <button onclick="submitted()">Submit</button>
+  </div>
+  <div id="recorder">
+   <img src="images/logo.jpg" width="250"/>
+   <br/><br/>
+   <img src="images/capture1.jpg" id="loading" alt="Image 1" width="100">
+   <br/><br/>
+   <div id="message">Click record to see what your pet's saying.</div>
+   <br/><br/>
+   <button onclick="moused()" id="record">Record</button>
+   <button onclick="end()" id="end">Stop</button><br/><br/>
+   <button onclick="resetPet()" id="reset">Reset Pet</button><br/><br/>
+  </div>
+ </body>
+</html>
